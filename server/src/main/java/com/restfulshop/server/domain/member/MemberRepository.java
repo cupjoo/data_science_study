@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    public List<Member> findAllByOrderByCreatedDate();
+    List<Member> findAllByOrderByCreatedDate();
 }
