@@ -5,12 +5,11 @@ import com.restfulshop.server.api.dto.member.MemberResponse;
 import com.restfulshop.server.api.dto.member.MemberResponseList;
 import com.restfulshop.server.domain.member.Member;
 import com.restfulshop.server.domain.member.MemberRepository;
-import com.restfulshop.server.exception.MemberDoesNotExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import javax.persistence.EntityNotFoundException;
 
 import static java.util.stream.Collectors.toList;
 
@@ -29,7 +28,7 @@ public class MemberService {
 
     public MemberResponse findById(Long id){
         Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new MemberDoesNotExistException(id));
+                .orElseThrow(() -> new IllegalArgumentException("Member "+id+" does not exist."));
         return new MemberResponse(member);  // Entity to Dto
     }
 
@@ -42,14 +41,14 @@ public class MemberService {
     @Transactional
     public void update(Long id, String name){
         Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new MemberDoesNotExistException(id));
+                .orElseThrow(() -> new IllegalArgumentException("Member "+id+" does not exist."));
         member.changeName(name);
     }
 
     @Transactional
     public void delete(Long id){
         Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new MemberDoesNotExistException(id));
+                .orElseThrow(() -> new IllegalArgumentException("Member "+id+" does not exist."));
         memberRepository.delete(member);
     }
 }

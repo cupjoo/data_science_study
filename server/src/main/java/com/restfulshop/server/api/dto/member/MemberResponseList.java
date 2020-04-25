@@ -2,13 +2,12 @@ package com.restfulshop.server.api.dto.member;
 
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 public class MemberResponseList {
 
-    private List<MemberResponse> data = new ArrayList<>();
+    private List<MemberResponse> data;
     private final int count;
 
     public MemberResponseList(List<MemberResponse> data){

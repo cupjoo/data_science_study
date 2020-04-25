@@ -3,18 +3,17 @@ package com.restfulshop.server.service;
 import com.restfulshop.server.api.dto.member.MemberCreateRequest;
 import com.restfulshop.server.api.dto.member.MemberResponse;
 import com.restfulshop.server.api.dto.member.MemberResponseList;
-import com.restfulshop.server.api.dto.member.MemberUpdateRequest;
 import com.restfulshop.server.domain.member.Address;
 import com.restfulshop.server.domain.member.Member;
-import com.restfulshop.server.exception.MemberDoesNotExistException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
@@ -53,7 +52,7 @@ class MemberServiceTest {
         // delete
         memberService.delete(response.getId());
         assertThatThrownBy(() -> memberService.findById(response.getId()))
-                .isInstanceOf(MemberDoesNotExistException.class)
+                .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Member "+response.getId()+" does not exist.");
     }
 }
