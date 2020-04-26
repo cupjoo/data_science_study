@@ -1,8 +1,8 @@
 package com.restfulshop.server.service;
 
-import com.restfulshop.server.api.dto.item.ItemCreateRequest;
 import com.restfulshop.server.api.dto.item.ItemResponse;
-import com.restfulshop.server.api.dto.item.ItemResponseList;
+import com.restfulshop.server.api.dto.item.ItemListResponse;
+import com.restfulshop.server.domain.item.Item;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,20 +21,20 @@ class ItemServiceTest {
     @Test
     void basicCrud() {
         // create
-        ItemCreateRequest request1 = ItemCreateRequest.builder()
-                .name("icecream").price(1500).stockQuantity(300).build();
-        ItemCreateRequest request2 = ItemCreateRequest.builder()
-                .name("chicken").price(20000).stockQuantity(20).build();
+        Item item1 = Item.builder().name("icecream").price(1500).build();
+        item1.addStock(300);
+        Item item2 = Item.builder().name("chicken").price(20000).build();
+        item2.addStock(20);
 
-        itemService.create(request1);
-        itemService.create(request2);
+        itemService.create(item1);
+        itemService.create(item2);
 
         // read
-        ItemResponseList itemList = itemService.findAll();
+        ItemListResponse itemList = itemService.findAll();
         ItemResponse response = itemList.getData().get(0);
 
         assertThat(itemList.getCount()).isEqualTo(2);
-        assertThat(response.getName()).isEqualTo(request1.getName());
+        assertThat(response.getName()).isEqualTo(item1.getName());
 
         // update
         itemService.updatePriceAndStock(response.getId(), 2000, -10);

@@ -17,8 +17,8 @@ public class ItemService {
     private final ItemRepository itemRepository;
 
     @Transactional
-    public Long create(ItemCreateRequest request){
-        Item item = itemRepository.save(request.toEntity());
+    public Long create(Item item){
+        itemRepository.save(item);
         return item.getId();
     }
 
@@ -28,8 +28,8 @@ public class ItemService {
         return new ItemResponse(item);  // Entity to Dto
     }
 
-    public ItemResponseList findAll(){
-        return new ItemResponseList(itemRepository.findAll().stream()
+    public ItemListResponse findAll(){
+        return new ItemListResponse(itemRepository.findAll().stream()
                 .map(ItemResponse::new)  // Entity to Dto
                 .collect(toList()));
     }

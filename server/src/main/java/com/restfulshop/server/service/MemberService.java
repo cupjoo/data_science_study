@@ -1,15 +1,12 @@
 package com.restfulshop.server.service;
 
-import com.restfulshop.server.api.dto.member.MemberCreateRequest;
 import com.restfulshop.server.api.dto.member.MemberResponse;
-import com.restfulshop.server.api.dto.member.MemberResponseList;
+import com.restfulshop.server.api.dto.member.MemberListResponse;
 import com.restfulshop.server.domain.member.Member;
 import com.restfulshop.server.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityNotFoundException;
 
 import static java.util.stream.Collectors.toList;
 
@@ -21,8 +18,8 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public Long create(MemberCreateRequest request){
-        Member member = memberRepository.save(request.toEntity());
+    public Long create(Member member){
+        memberRepository.save(member);
         return member.getId();
     }
 
@@ -32,8 +29,8 @@ public class MemberService {
         return new MemberResponse(member);  // Entity to Dto
     }
 
-    public MemberResponseList findAll(){
-        return new MemberResponseList(memberRepository.findAllByOrderByCreatedDate().stream()
+    public MemberListResponse findAll(){
+        return new MemberListResponse(memberRepository.findAllByOrderByCreatedDate().stream()
                 .map(MemberResponse::new)  // Entity to Dto
                 .collect(toList()));
     }

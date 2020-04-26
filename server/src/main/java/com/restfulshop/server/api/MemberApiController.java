@@ -1,6 +1,7 @@
 package com.restfulshop.server.api;
 
 import com.restfulshop.server.api.dto.member.*;
+import com.restfulshop.server.domain.member.Member;
 import com.restfulshop.server.service.MemberService;
 import lombok.*;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +17,12 @@ public class MemberApiController {
 
     @PostMapping
     public Long create(@RequestBody @Valid MemberCreateRequest request){
-        return memberService.create(request);
+        Member member = request.toEntity();
+        return memberService.create(member);
     }
 
     @GetMapping
-    public MemberResponseList findAll(){
+    public MemberListResponse findAll(){
         return memberService.findAll();
     }
 

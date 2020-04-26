@@ -5,12 +5,12 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class ItemResponseList {
+public class ItemListResponse {
 
     private List<ItemResponse> data;
     private final int count;
 
-    public ItemResponseList(List<ItemResponse> data){
+    public ItemListResponse(List<ItemResponse> data){
         this.data = data;
         this.count = data.size();
     }
