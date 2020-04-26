@@ -23,7 +23,7 @@ public class Item extends BaseTimeEntity {
 
     @Builder
     public Item(String name, int price){
-        this.name = name;
+        changeName(name);
         changePrice(price);
     }
 
@@ -39,6 +39,9 @@ public class Item extends BaseTimeEntity {
     }
 
     public void addStock(int quantity){
+        if(quantity < 0){
+            removeStock(-quantity);
+        }
         this.stockQuantity += quantity;
     }
 
