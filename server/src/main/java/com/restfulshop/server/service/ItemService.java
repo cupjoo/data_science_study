@@ -1,13 +1,12 @@
 package com.restfulshop.server.service;
 
-import com.restfulshop.server.api.dto.item.*;
 import com.restfulshop.server.domain.item.Item;
 import com.restfulshop.server.domain.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static java.util.stream.Collectors.toList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -22,16 +21,13 @@ public class ItemService {
         return item.getId();
     }
 
-    public ItemResponse findById(Long id){
-        Item item = itemRepository.findById(id)
+    public Item findById(Long id){
+        return itemRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Item "+id+" does not exist."));
-        return new ItemResponse(item);  // Entity to Dto
     }
 
-    public ItemListResponse findAll(){
-        return new ItemListResponse(itemRepository.findAll().stream()
-                .map(ItemResponse::new)  // Entity to Dto
-                .collect(toList()));
+    public List<Item> findAll(){
+        return itemRepository.findAll();
     }
 
     @Transactional

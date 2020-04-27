@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+import static java.util.stream.Collectors.toList;
+
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
 @RestController
@@ -23,12 +25,13 @@ public class MemberApiController {
 
     @GetMapping
     public MemberListResponse findAll(){
-        return memberService.findAll();
+        return new MemberListResponse(memberService.findAll().stream()
+                .map(MemberResponse::new).collect(toList()));
     }
 
     @GetMapping("/{id}")
     public MemberResponse findById(@PathVariable("id") Long id){
-        return memberService.findById(id);
+        return new MemberResponse(memberService.findById(id));
     }
 
     @PutMapping("/{id}")
@@ -37,7 +40,7 @@ public class MemberApiController {
             @RequestBody @Valid MemberUpdateRequest request){
 
         memberService.update(id, request.getName());  // 필요한 인자만 전달
-        return memberService.findById(id);
+        return new MemberResponse(memberService.findById(id));
     }
 
     @DeleteMapping("/{id}")

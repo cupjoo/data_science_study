@@ -41,7 +41,7 @@ public class Order extends BaseTimeEntity {
     private OrderStatus status;
 
     @Builder
-    public Order(Member member, Delivery delivery, OrderItem... orderItems){
+    public Order(Member member, Delivery delivery, List<OrderItem> orderItems){
         changeMember(member);
         changeDelivery(delivery);
         for (OrderItem orderItem: orderItems){

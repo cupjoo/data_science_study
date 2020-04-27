@@ -1,13 +1,13 @@
 package com.restfulshop.server.service;
 
-import com.restfulshop.server.api.dto.member.MemberResponse;
-import com.restfulshop.server.api.dto.member.MemberListResponse;
 import com.restfulshop.server.domain.member.Address;
 import com.restfulshop.server.domain.member.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -35,21 +35,21 @@ class MemberServiceTest {
         memberService.create(member2);
 
         // read
-        MemberListResponse memberList = memberService.findAll();
-        MemberResponse response = memberList.getData().get(0);
+        List<Member> members = memberService.findAll();
+        Member member = members.get(0);
 
-        assertThat(memberList.getCount()).isEqualTo(2);
-        assertThat(response.getName()).isEqualTo(member1.getName());
+        assertThat(members.size()).isEqualTo(2);
+        assertThat(member.getName()).isEqualTo(member1.getName());
 
         // update
-        memberService.update(response.getId(), "James");
-        MemberResponse updateMember = memberService.findById(response.getId());
+        memberService.update(member.getId(), "James");
+        Member updateMember = memberService.findById(member.getId());
         assertThat(updateMember.getName()).isEqualTo("James");
 
         // delete
-        memberService.delete(response.getId());
-        assertThatThrownBy(() -> memberService.findById(response.getId()))
+        memberService.delete(member.getId());
+        assertThatThrownBy(() -> memberService.findById(member.getId()))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Member "+response.getId()+" does not exist.");
+                .hasMessage("Member "+member.getId()+" does not exist.");
     }
 }

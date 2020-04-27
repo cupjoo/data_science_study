@@ -1,14 +1,12 @@
 package com.restfulshop.server.service;
 
-import com.restfulshop.server.api.dto.member.MemberResponse;
-import com.restfulshop.server.api.dto.member.MemberListResponse;
 import com.restfulshop.server.domain.member.Member;
 import com.restfulshop.server.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static java.util.stream.Collectors.toList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -23,16 +21,13 @@ public class MemberService {
         return member.getId();
     }
 
-    public MemberResponse findById(Long id){
-        Member member = memberRepository.findById(id)
+    public Member findById(Long id){
+        return memberRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Member "+id+" does not exist."));
-        return new MemberResponse(member);  // Entity to Dto
     }
 
-    public MemberListResponse findAll(){
-        return new MemberListResponse(memberRepository.findAllByOrderByCreatedDate().stream()
-                .map(MemberResponse::new)  // Entity to Dto
-                .collect(toList()));
+    public List<Member> findAll(){
+        return memberRepository.findAllByOrderByCreatedDate();
     }
 
     @Transactional

@@ -11,9 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.restfulshop.server.domain.member.QMember.*;
 import static com.restfulshop.server.domain.order.QDelivery.*;
@@ -45,7 +43,7 @@ class OrderTest {
         Delivery delivery1 = Delivery.builder().address(member1.getAddress()).build();
         Order order1 = Order.builder()
                 .member(member1).delivery(delivery1)
-                .orderItems(new OrderItem[]{orderItem1, orderItem2}).build();
+                .orderItems(Arrays.asList(orderItem1, orderItem2)).build();
         em.persist(order1);
         em.flush();
 
@@ -77,13 +75,17 @@ class OrderTest {
     void cancelOrder() {
         Member member1 = createMember();
         Item item1 = createItem(1, 3000, 50);
+        Item item2 = createItem(2, 5000, 20);
         OrderItem orderItem1 = OrderItem.builder()
                 .item(item1).count(15).orderPrice(item1.getPrice()-500).build();
+        OrderItem orderItem2 = OrderItem.builder()
+                .item(item2).count(20).orderPrice(item2.getPrice()).build();
+        List<OrderItem> orderItems = Arrays.asList(orderItem1, orderItem1);
 
         Delivery delivery1 = Delivery.builder().address(member1.getAddress()).build();
         Order order1 = Order.builder()
                 .member(member1).delivery(delivery1)
-                .orderItems(new OrderItem[]{orderItem1}).build();
+                .orderItems(Arrays.asList(orderItem1, orderItem2)).build();
         em.persist(order1);
         em.flush();
 

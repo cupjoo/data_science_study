@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,7 +43,7 @@ class OrderRepositoryTest {
         Delivery delivery1 = Delivery.builder().address(member1.getAddress()).build();
         Order order1 = Order.builder()
                 .member(member1).delivery(delivery1)
-                .orderItems(new OrderItem[]{orderItem1, orderItem2}).build();
+                .orderItems(Arrays.asList(orderItem1, orderItem2)).build();
 
         // when
         orderRepository.save(order1);
