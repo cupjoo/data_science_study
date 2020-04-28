@@ -1,7 +1,7 @@
 package com.restfulshop.server.service;
 
 import com.restfulshop.server.domain.item.Item;
-import com.restfulshop.server.domain.item.ItemRepository;
+import com.restfulshop.server.repository.item.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

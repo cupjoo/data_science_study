@@ -1,4 +1,6 @@
-package com.restfulshop.server.domain.item;
+package com.restfulshop.server.repository.item;
+
+import com.restfulshop.server.domain.item.Item;
 
 import java.util.List;
 

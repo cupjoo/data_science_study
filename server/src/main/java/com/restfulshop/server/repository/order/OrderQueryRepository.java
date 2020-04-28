@@ -1,7 +1,9 @@
-package com.restfulshop.server.domain.order;
+package com.restfulshop.server.repository.order;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.restfulshop.server.domain.order.Order;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -10,12 +12,12 @@ import static com.restfulshop.server.domain.order.QDelivery.delivery;
 import static com.restfulshop.server.domain.order.QOrder.order;
 
 @RequiredArgsConstructor
-public class OrderRepositoryImpl implements OrderQueryRepository {
+@Repository
+public class OrderQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    @Override
-    public List<Order> findAllWithFetch() {
+    public List<Order> findAllWithFetch(){
         return queryFactory
                 .selectFrom(order)
                 .join(order.member, member).fetchJoin()

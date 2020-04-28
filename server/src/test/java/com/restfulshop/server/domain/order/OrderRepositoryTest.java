@@ -3,6 +3,8 @@ package com.restfulshop.server.domain.order;
 import com.restfulshop.server.domain.item.Item;
 import com.restfulshop.server.domain.member.Address;
 import com.restfulshop.server.domain.member.Member;
+import com.restfulshop.server.repository.order.OrderQueryRepository;
+import com.restfulshop.server.repository.order.OrderRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,12 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 
-import static com.restfulshop.server.domain.member.QMember.member;
-import static com.restfulshop.server.domain.order.QDelivery.delivery;
-import static com.restfulshop.server.domain.order.QOrder.order;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
@@ -27,6 +24,9 @@ class OrderRepositoryTest {
 
     @Autowired
     OrderRepository orderRepository;
+
+    @Autowired
+    OrderQueryRepository orderQueryRepository;
 
     @Test
     void createOrder(){
@@ -47,7 +47,7 @@ class OrderRepositoryTest {
 
         // when
         orderRepository.save(order1);
-        Order findOrder = orderRepository.findAllWithFetch().get(0);
+        Order findOrder = orderQueryRepository.findAllWithFetch().get(0);
 
         // then
         assertThat(findOrder.getId()).isEqualTo(order1.getId());

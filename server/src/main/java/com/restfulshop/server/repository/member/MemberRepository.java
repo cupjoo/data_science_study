@@ -1,5 +1,6 @@
-package com.restfulshop.server.domain.member;
+package com.restfulshop.server.repository.member;
 
+import com.restfulshop.server.domain.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

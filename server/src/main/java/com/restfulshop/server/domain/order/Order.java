@@ -55,11 +55,8 @@ public class Order extends BaseTimeEntity {
     }
 
     public void completeDelivery(){
-        if(status.equals(OrderStatus.CANCEL)){
-            throw new IllegalStateException("이미 취소된 주문입니다.");
-        } else {
-            delivery.completeDelivery();
-        }
+        validateOrderCanceled();
+        delivery.completeDelivery();
     }
 
     public void changeDeliveryAddress(Address address){
@@ -67,7 +64,8 @@ public class Order extends BaseTimeEntity {
     }
 
     public void cancel(){
-        this.status = OrderStatus.CANCEL;
+        validateOrderCanceled();
+        status = OrderStatus.CANCEL;
         for(OrderItem orderItem : orderItems){
             orderItem.cancel();
         }
@@ -77,5 +75,11 @@ public class Order extends BaseTimeEntity {
         return orderItems.stream()
                 .mapToInt(OrderItem::getTotalPrice)
                 .sum();
+    }
+
+    private void validateOrderCanceled(){
+        if(status.equals(OrderStatus.CANCEL)){
+            throw new IllegalStateException("이미 취소된 주문입니다.");
+        }
     }
 }

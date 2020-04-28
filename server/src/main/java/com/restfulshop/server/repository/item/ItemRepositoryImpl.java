@@ -1,6 +1,7 @@
-package com.restfulshop.server.domain.item;
+package com.restfulshop.server.repository.item;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.restfulshop.server.domain.item.Item;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
