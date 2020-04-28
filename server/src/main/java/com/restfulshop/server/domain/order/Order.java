@@ -1,6 +1,7 @@
 package com.restfulshop.server.domain.order;
 
 import com.restfulshop.server.domain.BaseTimeEntity;
+import com.restfulshop.server.domain.member.Address;
 import com.restfulshop.server.domain.member.Member;
 import lombok.*;
 
@@ -42,41 +43,31 @@ public class Order extends BaseTimeEntity {
 
     @Builder
     public Order(Member member, Delivery delivery, List<OrderItem> orderItems){
-        changeMember(member);
-        changeDelivery(delivery);
-        for (OrderItem orderItem: orderItems){
-            addOrderItem(orderItem);
-        }
-        changeStatus(OrderStatus.ORDER);
-        changeOrderDate(LocalDateTime.now());
-    }
-
-    public void changeMember(Member member){
         this.member = member;
-    }
-    public void addOrderItem(OrderItem orderItem){
-        orderItems.add(orderItem);
-        orderItem.changeOrder(this);
-    }
-
-    public void changeDelivery(Delivery delivery){
-        this.delivery = delivery;
         delivery.changeOrder(this);
+        this.delivery = delivery;
+        for (OrderItem orderItem: orderItems){
+            orderItem.changeOrder(this);
+            this.orderItems.add(orderItem);
+        }
+        this.status = OrderStatus.ORDER;
+        this.orderDate = LocalDateTime.now();
     }
 
-    private void changeStatus(OrderStatus status){
-        this.status = status;
+    public void completeDelivery(){
+        if(status.equals(OrderStatus.CANCEL)){
+            throw new IllegalStateException("이미 취소된 주문입니다.");
+        } else {
+            delivery.completeDelivery();
+        }
     }
 
-    public void changeOrderDate(LocalDateTime orderDate){
-        this.orderDate = orderDate;
+    public void changeDeliveryAddress(Address address){
+        delivery.changeAddress(address);
     }
 
     public void cancel(){
-        if(delivery.getStatus() == DeliveryStatus.COMP){
-            throw new IllegalStateException("이미 배송이 완료된 상품은 취소가 불가능합니다.");
-        }
-        changeStatus(OrderStatus.CANCEL);
+        this.status = OrderStatus.CANCEL;
         for(OrderItem orderItem : orderItems){
             orderItem.cancel();
         }

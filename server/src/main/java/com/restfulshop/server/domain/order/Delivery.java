@@ -36,4 +36,16 @@ public class Delivery extends BaseTimeEntity {
     public void changeOrder(Order order){
         this.order = order;
     }
+
+    public void completeDelivery(){
+        this.status = DeliveryStatus.COMP;
+    }
+
+    public void changeAddress(Address address){
+        if(status.equals(DeliveryStatus.COMP)){
+            throw new IllegalStateException("이미 배송완료된 주문입니다.");
+        } else {
+            this.address = address;
+        }
+    }
 }
