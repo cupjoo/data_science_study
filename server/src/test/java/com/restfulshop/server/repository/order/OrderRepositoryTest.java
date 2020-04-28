@@ -1,8 +1,12 @@
-package com.restfulshop.server.domain.order;
+package com.restfulshop.server.repository.order;
 
 import com.restfulshop.server.domain.item.Item;
 import com.restfulshop.server.domain.member.Address;
 import com.restfulshop.server.domain.member.Member;
+import com.restfulshop.server.domain.order.Delivery;
+import com.restfulshop.server.domain.order.Order;
+import com.restfulshop.server.domain.order.OrderItem;
+import com.restfulshop.server.domain.order.OrderStatus;
 import com.restfulshop.server.repository.order.OrderQueryRepository;
 import com.restfulshop.server.repository.order.OrderRepository;
 import org.junit.jupiter.api.Test;

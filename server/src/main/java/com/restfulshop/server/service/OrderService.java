@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -35,7 +36,7 @@ public class OrderService {
 
         List<Item> items = itemRepository.findSelectedItems(itemIds);
         List<OrderItem> orderItems = new ArrayList<>();
-        for(int i = 0; i < items.size(); i++){
+        IntStream.range(0, items.size()).forEach(i -> {
             Item item = items.get(i);
             OrderItem oi = OrderItem.builder()
                     .item(item)
@@ -43,7 +44,7 @@ public class OrderService {
                     .count(counts.get(i)).build();
             orderItemRepository.save(oi);
             orderItems.add(oi);
-        }
+        });
 
         Order order = Order.builder()
                 .member(member).delivery(delivery).orderItems(orderItems).build();

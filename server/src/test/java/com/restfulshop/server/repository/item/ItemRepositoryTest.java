@@ -1,5 +1,6 @@
-package com.restfulshop.server.domain.item;
+package com.restfulshop.server.repository.item;
 
+import com.restfulshop.server.domain.item.Item;
 import com.restfulshop.server.repository.item.ItemRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
