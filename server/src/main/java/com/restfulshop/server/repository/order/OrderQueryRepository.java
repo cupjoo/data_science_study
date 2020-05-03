@@ -35,8 +35,7 @@ public class OrderQueryRepository {
     }
 
     public Page<Order> findAllWithPagination(
-            OrderSearchCondition condition,
-            Pageable pageable){
+            OrderSearchCondition condition, Pageable pageable){
 
         List<Order> content = queryFactory
                 .selectFrom(order)

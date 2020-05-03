@@ -18,6 +18,8 @@ import javax.persistence.EntityManager;
 import java.util.*;
 import java.util.stream.IntStream;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @Transactional
 @SpringBootTest
 class OrderQueryRepositoryTest {
@@ -31,14 +33,25 @@ class OrderQueryRepositoryTest {
     @Test
     void findAllWithPagination() {
         OrderSearchCondition blankCondition = new OrderSearchCondition();
-        OrderSearchCondition condition = OrderSearchCondition.builder()
-                .memberName("Junyoung").orderStatus(OrderStatus.ORDER).build();
-        PageRequest pageRequest = PageRequest.of(0, 5);
+        PageRequest pageRequest = PageRequest.of(2, 4);
+
+        List<Order> orders = orderQueryRepository.findAllWithFetch();
 
         Page<Order> blankPage = orderQueryRepository.findAllWithPagination(
                 blankCondition, pageRequest);
+        List<Order> content = blankPage.getContent();
 
-        Page<Order> page = orderQueryRepository.findAllWithPagination(condition, pageRequest);
+        assertThat(content.size()).isEqualTo(4);
+        assertThat(blankPage.getTotalElements()).isEqualTo(24);
+        assertThat(blankPage.getNumber()).isEqualTo(2);
+        assertThat(blankPage.getTotalPages()).isEqualTo(6);
+        assertThat(blankPage.isFirst()).isFalse();
+        assertThat(blankPage.hasNext()).isTrue();
+
+        OrderSearchCondition condition = OrderSearchCondition.builder()
+                .memberName("Junyoung").orderStatus(OrderStatus.ORDER).build();
+        Page<Order> page = orderQueryRepository.findAllWithPagination(
+                condition, pageRequest);
     }
 
     @BeforeEach
